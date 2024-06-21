@@ -1,0 +1,38 @@
+<div class="app">
+  <div class="controls">
+    <form (submit)="handleFormSubmit($event)" class="input-group">
+      <input type="text" [(ngModel)]="origin" name="origin" placeholder="Origin (e.g., Pune)" required />
+      <button type="button" (click)="getLocation(setOrigin)" class="calculate-btn">Use My Location</button>
+      <input type="text" [(ngModel)]="destination" name="destination" placeholder="Destination (e.g., Mumbai)" required />
+      <select [(ngModel)]="profile" name="profile">
+        <option value="driving-car">Driving (Car)</option>
+        <option value="cycling-regular">Cycling</option>
+        <option value="foot-walking">Walking</option>
+        <option value="driving-hgv">Driving (Heavy Goods Vehicle)</option>
+      </select>
+      <div class="button-group">
+        <button type="submit" class="calculate-btn">Get Route</button>
+        <button type="button" (click)="clearRoute()" class="clear-btn">Clear</button>
+      </div>
+    </form>
+
+    <div *ngIf="distance" class="info-group">
+      <span>Distance: {{ (distance / 1000).toFixed(2) }} km</span>
+      <span>Duration: {{ Math.floor(duration / 3600) }} hr {{ Math.floor((duration % 3600) / 60) }} mins</span>
+    </div>
+
+    <form (submit)="handleIsochroneSubmit($event)" class="input-group">
+      <input type="number" [(ngModel)]="range" name="range" placeholder="Range (e.g., 600)" required />
+      <select [(ngModel)]="rangeType" name="rangeType">
+        <option value="time">Time</option>
+        <option value="distance">Distance</option>
+      </select>
+      <div class="button-group">
+        <button type="submit" class="calculate-btn">Get Isochrone</button>
+        <button type="button" (click)="clearIsochrone()" class="clear-btn">Clear</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="map-container" id="map" style="height: 100%; width: 100%;"></div>
+</div>

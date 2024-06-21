@@ -93,12 +93,20 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/leaflet/dist/leaflet.scss",
+              "node_modules/leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.js"
+            ]
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

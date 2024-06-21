@@ -1,1 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.controls {
+  padding: 10px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.input-group, .info-group, .button-group {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.input-group input, .input-group select, .input-group button, .button-group button {
+  margin-right: 10px;
+  padding: 5px;
+}
+
+.map-container {
+  flex: 1;
+}
