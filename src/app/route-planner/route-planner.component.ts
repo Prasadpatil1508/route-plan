@@ -153,14 +153,18 @@ export class RoutePlannerComponent implements OnInit {
     this.error = null;
   }
 
-  getLocation(setter: (value: string) => void) {
+  getLocation(type: 'origin' | 'destination') {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
           try {
             const placeName = await this.reverseGeocode([latitude, longitude]);
-            setter(placeName);
+            if (type === 'origin') {
+              this.origin = placeName;
+            } else {
+              this.destination = placeName;
+            }
           } catch (error: any) {
             this.error = 'Error fetching place name: ' + error.message;
           }
@@ -172,5 +176,12 @@ export class RoutePlannerComponent implements OnInit {
     } else {
       this.error = 'Geolocation is not supported by this browser.';
     }
+  }
+
+  calculateDuration(duration: number | null) {
+    if (duration === null) return '';
+    const hours = Math.floor(duration / 3600);
+    const minutes = Math.floor((duration % 3600) / 60);
+    return `${hours} hr ${minutes} mins`;
   }
 }

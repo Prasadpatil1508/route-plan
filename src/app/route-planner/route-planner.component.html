@@ -2,8 +2,10 @@
   <div class="controls">
     <form (submit)="handleFormSubmit($event)" class="input-group">
       <input type="text" [(ngModel)]="origin" name="origin" placeholder="Origin (e.g., Pune)" required />
-      <button type="button" (click)="getLocation(setOrigin)" class="calculate-btn">Use My Location</button>
-      <input type="text" [(ngModel)]="destination" name="destination" placeholder="Destination (e.g., Mumbai)" required />
+      <button type="button" (click)="getLocation('origin')" class="calculate-btn">Use My Location</button>
+
+      <input type="text" [(ngModel)]="destination" name="destination" placeholder="Destination (e.g., Mumbai)"
+        required />
       <select [(ngModel)]="profile" name="profile">
         <option value="driving-car">Driving (Car)</option>
         <option value="cycling-regular">Cycling</option>
@@ -16,9 +18,9 @@
       </div>
     </form>
 
-    <div *ngIf="distance" class="info-group">
+    <div *ngIf="distance !== null" class="info-group">
       <span>Distance: {{ (distance / 1000).toFixed(2) }} km</span>
-      <span>Duration: {{ Math.floor(duration / 3600) }} hr {{ Math.floor((duration % 3600) / 60) }} mins</span>
+      <span>Duration: {{ calculateDuration(duration) }}</span>
     </div>
 
     <form (submit)="handleIsochroneSubmit($event)" class="input-group">
