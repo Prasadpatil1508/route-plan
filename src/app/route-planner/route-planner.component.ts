@@ -24,6 +24,8 @@ export class RoutePlannerComponent implements OnInit {
   map: any;
   routeLayer: any;
   isochroneLayer: any;
+  originMarker: any;
+  destinationMarker: any;
 
   ngOnInit() {
     this.map = L.map('map').setView([18.5204, 73.8567], 13);
@@ -64,6 +66,26 @@ export class RoutePlannerComponent implements OnInit {
       const originCoords = await this.geocode(this.origin);
       const destinationCoords = await this.geocode(this.destination);
 
+      // Add markers to the map
+      if (this.originMarker) {
+        this.map.removeLayer(this.originMarker);
+      }
+      if (this.destinationMarker) {
+        this.map.removeLayer(this.destinationMarker);
+      }
+
+      this.originMarker = L.marker([originCoords[1], originCoords[0]])
+        .addTo(this.map)
+        .bindPopup('Origin: ' + this.origin)
+        .openPopup();
+      this.destinationMarker = L.marker([
+        destinationCoords[1],
+        destinationCoords[0],
+      ])
+        .addTo(this.map)
+        .bindPopup('Destination: ' + this.destination)
+        .openPopup();
+
       const directions = new Openrouteservice.Directions({
         api_key: ORS_API_KEY,
       });
@@ -79,6 +101,10 @@ export class RoutePlannerComponent implements OnInit {
         const routeCoordinates = route.geometry.coordinates.map(
           (coord: [number, number]) => [coord[1], coord[0]]
         );
+
+        if (this.routeLayer) {
+          this.map.removeLayer(this.routeLayer);
+        }
 
         this.routeLayer = L.polyline(routeCoordinates, { color: 'blue' }).addTo(
           this.map
@@ -116,6 +142,10 @@ export class RoutePlannerComponent implements OnInit {
       });
 
       if (response.features && response.features.length > 0) {
+        if (this.isochroneLayer) {
+          this.map.removeLayer(this.isochroneLayer);
+        }
+
         this.isochroneLayer = L.geoJSON(response.features, {
           style: { color: 'red' },
         }).addTo(this.map);
@@ -132,6 +162,14 @@ export class RoutePlannerComponent implements OnInit {
     if (this.routeLayer) {
       this.map.removeLayer(this.routeLayer);
       this.routeLayer = null;
+    }
+    if (this.originMarker) {
+      this.map.removeLayer(this.originMarker);
+      this.originMarker = null;
+    }
+    if (this.destinationMarker) {
+      this.map.removeLayer(this.destinationMarker);
+      this.destinationMarker = null;
     }
     this.route = null;
     this.distance = null;
